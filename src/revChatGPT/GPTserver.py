@@ -16,9 +16,7 @@ def verify_data(data: dict) -> bool:
     Verifies that the required fields are present in the data.
     """
     # Required fields: "prompt", "session_token"
-    if "prompt" not in data or "session_token" not in data:
-        return False
-    return True
+    return "prompt" in data and "session_token" in data
 
 
 @app.route("/chat", methods=["POST"])
@@ -32,8 +30,8 @@ def chat():
 
     chatbot.session_token: str = data["session_token"]
 
-    conversation_id = data.get("conversation_id", None)
-    parent_id = data.get("parent_id", None)
+    conversation_id = data.get("conversation_id")
+    parent_id = data.get("parent_id")
 
     # Return rate limit if token_available is false
     if token_available.get(
