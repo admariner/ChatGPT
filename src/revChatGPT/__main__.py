@@ -19,24 +19,17 @@ def get_input(prompt):
             break
         lines.append(line)
 
-    # Join the lines, separated by newlines, and store the result
-    user_input = "\n".join(lines)
-
-    # Return the input
-    return user_input
+    return "\n".join(lines)
 
 
 def configure():
     config_files = ["config.json"]
-    xdg_config_home = getenv("XDG_CONFIG_HOME")
-    if xdg_config_home:
+    if xdg_config_home := getenv("XDG_CONFIG_HOME"):
         config_files.append(f"{xdg_config_home}/revChatGPT/config.json")
-    user_home = getenv("HOME")
-    if user_home:
+    if user_home := getenv("HOME"):
         config_files.append(f"{user_home}/.config/revChatGPT/config.json")
 
-    config_file = next((f for f in config_files if exists(f)), None)
-    if config_file:
+    if config_file := next((f for f in config_files if exists(f)), None):
         with open(config_file, encoding="utf-8") as f:
             config = json.load(f)
     else:
